@@ -1,0 +1,49 @@
+{
+  "node": "v24.19.0",
+  "npm": "11.9.0",
+  "functionsRuntime": "nodejs22",
+  "flutterSource": "3.47.6",
+  "dart": "3.13.5",
+  "javaEmulator": "21",
+  "platform": "Linux x64",
+  "package.json": {
+    "devDependencies": {
+      "@firebase/rules-unit-testing": "^5.0.2",
+      "firebase-tools": "^15.32.1",
+      "playwright": "^1.63.0"
+    }
+  },
+  "functions/package.json": {
+    "dependencies": {
+      "express": "^5.2.1",
+      "firebase-admin": "^14.5.0",
+      "firebase-functions": "^7.4.0",
+      "sharp": "^0.35.5",
+      "zod": "^4.6.5"
+    },
+    "devDependencies": {
+      "@types/express": "^5.0.6",
+      "@types/node": "^26.6.4",
+      "tsx": "^4.23.15",
+      "typescript": "^7.0.2"
+    }
+  },
+  "customer_web/package.json": {
+    "dependencies": {
+      "firebase": "^12.19.0",
+      "lucide-react": "^1.51.0",
+      "react": "^19.3.0",
+      "react-dom": "^19.3.0"
+    },
+    "devDependencies": {
+      "@types/react": "^19.3.0",
+      "@types/react-dom": "^19.3.0",
+      "typescript": "^7.0.2",
+      "vite": "^8.3.2"
+    }
+  },
+  "flutterSourceRevision": "5fc346839b5d0eef006ed8404392afb4dfae428d",
+  "dartAnalysis": "No issues found",
+  "browser": "Chromium 153.0.8010.0",
+  "pubDependencyResolution": "offline solver, 106 packages, pubspec.lock generated"
+}

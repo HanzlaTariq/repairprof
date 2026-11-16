@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function owns(uid) { return request.auth != null && request.auth.uid == uid; }
+  function active(uid) { return !('deleting' in get(/databases/$(database)/documents/shops/$(uid)).data) || get(/databases/$(database)/documents/shops/$(uid)).data.deleting != true; }
+  match /shops/{uid} { allow read: if owns(uid) && active(uid); allow write: if false;
+   match /tickets/{ticket} { allow read: if owns(uid) && active(uid); allow write: if false; }
+  }
+  match /{all=**} { allow read, write: if false; }
+ }
+}

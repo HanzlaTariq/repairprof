@@ -1,0 +1,14 @@
+{
+  "passed": 8,
+  "checks": [
+    "Live customer quote displayed",
+    "Token removed from address bar",
+    "360px width no horizontal overflow",
+    "Decision requires explicit checkbox",
+    "Approve exact version reaches backend",
+    "Family UI excludes financial/approval controls",
+    "Final receipt printed to PDF",
+    "Invalid link state displayed"
+  ],
+  "consoleErrors": []
+}

@@ -1,0 +1,1 @@
+{"indexes":[],"fieldOverrides":[{"collectionGroup":"uploads","fieldPath":"consumed","indexes":[{"order":"ASCENDING","queryScope":"COLLECTION_GROUP"}]}]}

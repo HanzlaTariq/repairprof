@@ -1,0 +1,3 @@
+export type Item={description:string;quantity:number;unitMinor:number;kind:string};
+export type Warranty={start:string;end:string;covered:string;exclusions:string;terms:string};
+export type Tracking={scope:'customer'|'family';number:string;status:string;device?:string;checkInAt:string;refreshedAt:string;shop:{name:string;phone:string;address:string;hours:string;timezone:string};timeline?:{at:string;status:string;label:string}[];pendingQuote?:{version:number;diagnosis:string;items:Item[];totalMinor:number};approvedMinor?:number;outcome?:string;receipt?:{items:Item[];totalMinor:number;paidMinor:number;balanceMinor:number;at:string;warranty:Warranty|null;warrantyPeriodEnded:boolean|null}};

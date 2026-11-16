@@ -1,0 +1,4 @@
+storePassword=YOUR_PRIVATE_KEYSTORE_PASSWORD
+keyPassword=YOUR_PRIVATE_KEY_PASSWORD
+keyAlias=upload
+storeFile=C:/Users/YOUR_USER/repairproof-upload.jks

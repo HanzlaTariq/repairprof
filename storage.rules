@@ -1,0 +1,8 @@
+rules_version = '2';
+service firebase.storage {
+ match /b/{bucket}/o {
+  // Access is through authenticated, scoped backend photo endpoints only.
+  // No client-created download tokens or public image URLs.
+  match /{all=**} { allow read, write: if false; }
+ }
+}

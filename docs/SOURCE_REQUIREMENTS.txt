@@ -1,0 +1,302 @@
+REPAIRPROOF — COMPLETE APP-BUILDING MASTER PROMPT
+
+Act as a senior Flutter developer, backend engineer, UI/UX designer and software tester. Build a complete, runnable semester-project application called RepairProof. Deliver working source code, not only a design, explanation, static dashboard or collection of disconnected screens.
+
+PROJECT DETAILS
+App name: RepairProof
+Title: Digital Repair Handover, Status Tracking and Warranty Management
+Student: Hanzla Tariq
+Registration number: COSC231103001
+Section: COSC-7B
+Subject: Mobile Application Development
+Development environment: Windows and VS Code
+Primary platform: Android shopkeeper app, with a responsive customer website.
+
+Put student details in project documentation. Do not expose the registration number on customer tracking pages or receipts. Never invent a university, supervisor, address or contact number.
+
+1. SOURCE OF TRUTH AND SCOPE
+
+Read the attached RepairProof_Hanzla_Tariq.pdf completely, including its flowcharts. Preserve its FR-01 to FR-36 identifiers, priorities, business rules, three contact cases, seven repair statuses and first-version boundaries. When the attachment is unavailable, disclose that and use the requirements reproduced below without claiming to have read it.
+
+The PDF defines product behaviour. The technology, folder structure and visual specifications below are proposed implementation choices, not quotations from the PDF. Record additional technical defaults in ASSUMPTIONS.md. Flag genuine conflicts rather than silently changing the project.
+
+Build four connected components: the shopkeeper Android app, a protected shared backend, a private customer tracking website, and printable handover/final receipts.
+
+The app manages repair records, not the physical location of a phone. Customers do not need to install an app or create an account. The customer's repair phone is not the notification destination. A locally stored record on one phone is not sufficient for remote tracking.
+
+Complete the semester MVP before future extensions. Do not add automated SMS, automated WhatsApp, push notifications, a customer app, subscriptions, online payment gateways, multiple staff/branches, persistent offline intake drafts, AI diagnosis or device-location tracking. Keep these outside the active interface and document relevant extensions separately. Use simple English interface labels; Urdu/Roman Urdu localization remains a later feature.
+
+2. IMPLEMENTATION STACK
+
+Use Flutter and Dart for the shopkeeper app, with GetX controllers, bindings, dependency injection and named routes. Use GetMaterialApp and a central route configuration. Do not scatter Navigator.push calls or business logic throughout widgets.
+
+Use React, TypeScript and Vite for a lightweight responsive customer website. This is a small tracking interface, not a second shop-management dashboard.
+
+Use Firebase Authentication for shopkeeper email/password access, Cloud Firestore for shared records, Cloud Storage for private device-condition images, Cloud Functions with TypeScript for protected business operations, and Firebase Hosting for the customer website.
+
+Provide Firebase Emulator Suite configuration for local development and testing. Keep emulator and production configurations separate. Emulator mode must exercise the actual backend logic, not replace it with fake success messages.
+
+Check the installed Flutter/Dart versions and current official package documentation. Choose mutually compatible stable dependencies and a supported functions runtime. Include lockfiles and document the versions actually used. Do not invent package APIs or hardcode guessed versions.
+
+Explain billing requirements before cloud deployment. Never enable billing, deploy to a paid project or publish the app without my authorization. Missing cloud credentials should not block implementing and testing the local emulator version.
+
+3. ACTORS AND ACCESS
+
+The shopkeeper registers and signs in, manages their own shop and creates repair tickets. Initially, support one owner account per shop. Different shops may register, but their data must remain isolated.
+
+The customer has ticket-specific private browser access. They may view authorized repair information and record a decision on their quotation.
+
+A permitted family contact receives only limited status/pickup information. Receiving messages does not grant quotation approval, financial access or permission to collect the device.
+
+Do not create an admin/customer role toggle or let users self-assign privileged roles. Customers should never need to sign in as shopkeepers.
+
+4. THREE CUSTOMER CONTACT CASES — REQUIRED
+
+CASE A: CUSTOMER HAS ANOTHER PERSONAL PHONE
+Example: Ali leaves his broken phone but has another usable phone. Record that reachable number, not merely the number associated with the device left at the shop. Allow the shopkeeper to manually share a customer-scoped tracking link or open the dialer. Ali opens the link in a browser and checks his authorized record. Internet is needed for web tracking; a normal call remains a separate option.
+
+CASE B: CUSTOMER PERMITS A FAMILY CONTACT
+Example: Ali has no second phone and permits the shop to contact his brother. Record the recipient's name, reachable number, permission time and permitted purpose. Provide a separate status-only link or minimal message. Do not disclose prices, photos, private notes, receipts, collection secrets or approval controls to the family contact. Ali still makes quotation decisions, using a verified call, an in-person visit or separately issued customer access when appropriate.
+
+CASE C: NO USABLE ALTERNATE CONTACT OR INTERNET
+Allow ticket creation without a phone number. Generate a printable handover receipt containing the ticket number, private collection code, shop contact, initial estimate and expected pickup/check-in time. Agree on when the customer should return. Do not promise live updates or require an OTP or online approval. A new quotation waits for the customer's in-person decision when no verified remote response is possible.
+
+Changing the selected contact route later requires the customer's permission and an audit record. Do not send updates to a SIM assumed to be reachable while it is inside the repair phone.
+
+5. VISUAL DESIGN
+
+Create a polished, attractive interface suitable for a university demonstration and real shop use. Use a consistent emerald/white visual direction matching the RepairProof document: deep green primary, soft mint surfaces, white cards and dark readable text.
+
+Suggested design tokens: primary #0B6B57, accent #10B981, background #F5F8F7 and text #182B25. Check contrast rather than applying colours blindly. Use Material 3, restrained shadows, rounded cards, consistent spacing, clear typography and accessible touch targets.
+
+Use recognizable device, receipt, quotation, phone and warranty icons. Include an understated RepairProof wordmark. Avoid busy gradients, unrelated stock images, excessive animation and dense forms.
+
+Use bottom navigation for Dashboard, Tickets, History and Shop, with a prominent New Repair action. Use a short, step-by-step intake form. Show text labels as well as status colours. Adapt layouts to small Android screens and larger browser widths without clipping or overflow.
+
+Include loading, empty, validation, retry, expired-link and permission-denied states. Financial cards must use actual saved records, not decorative hardcoded totals. Customer tracking should look trustworthy and show its last successful refresh time.
+
+6. ACCOUNT AND INTAKE: FR-01 TO FR-09
+
+FR-01 [Must]: Shop registration and email/password sign-in.
+FR-02 [Must]: Sign-out and password-reset flow.
+FR-03 [Must]: Backend-enforced own-shop access; customer access cannot manage shops.
+FR-04 [Must]: Create tickets with customer name, device brand/model and reported problem.
+FR-05 [Must]: Record exterior condition, condition photos and received accessories.
+FR-06 [Must]: Select Case A, B or C; do not require a phone number for Case C.
+FR-07 [Must]: Save family-contact recipient, reachable number and permission.
+FR-08 [Must]: Save initial estimate, expected completion/check-in time and intake acknowledgement.
+FR-09 [Must]: Validate, record handover time, create the ticket in Received and prevent duplicate saves.
+
+Implement an intake wizard: customer/contact case; device/condition/accessories; estimate/check-in; review/acknowledgement; save/receipt.
+
+Registration must securely bind the authenticated account to its shop. Do not trust a client-supplied owner ID. Clear private cached data when switching accounts or signing out.
+
+Use explicit validation and documented limits for text and images. Handle denied camera permissions and interrupted uploads. Keep photos private and restricted to exterior condition/accessories. Never request CNIC, device unlock PIN, passwords, banking credentials or personal gallery contents.
+
+Use a stable request identifier for retries of the same save. Disabling a button alone is not duplicate prevention. Handle failed uploads without presenting an incomplete ticket as successfully saved. Do not issue an official ticket receipt until the shared save is confirmed.
+
+The initial estimate and intake acknowledgement are not automatic approval of a later quotation.
+
+7. PRIVATE TICKETS AND TRACKING: FR-10 TO FR-14
+
+FR-10 [Must]: Generate a readable ticket number, such as RP-1025, separate from access credentials.
+FR-11 [Must]: Generate a hard-to-guess private tracking link and corresponding QR code.
+FR-12 [Must]: Show only authorized customer fields, without requiring app installation.
+FR-13 [Must]: Give family contacts a genuinely restricted status-only response.
+FR-14 [Must]: Validate scope, expiry and revocation on the server and limit invalid-access attempts.
+
+Generate unique internal IDs and concurrency-safe display numbers. A display number alone must never retrieve a private ticket.
+
+Create independent customer and family-access credentials. Generate cryptographically random tokens on the server and store secure verifiers rather than raw token values. Make expiry configurable and provide authenticated revocation/reissue controls. Revoke obsolete access when permissions change. Do not let the browser choose its own scope.
+
+Provide protected endpoints that return explicitly whitelisted fields. Do not return the entire ticket and merely hide sensitive fields using CSS. The customer website must not directly query unrestricted Firestore collections.
+
+Customer view: ticket reference, device summary, current status, safe timeline, latest pending quote when a decision is required, approved amount, shop contact and applicable receipt/warranty details.
+
+Family view: only permitted status, pickup/check-in information and shop contact. No financial details, condition photos, quotations, receipts, private staff notes or collection code.
+
+Use generic invalid/expired/revoked-link messages. Keep tokens out of logs, analytics, referrer headers and public QR-generation services. Provide private-response cache controls and document the credential-handling design. Prefer a fragment-token exchange or another documented design that avoids token-bearing request URLs.
+
+Physical collection credentials must remain separate from tracking credentials. A tracking link is not proof of ownership or collection authorization. Opening a link must never automatically approve a quotation.
+
+8. MANUAL COMMUNICATION: FR-15 TO FR-18
+
+FR-15 [Must]: Case A supports manual private-link sharing and calling the reachable customer.
+FR-16 [Must]: Case B contacts only the permitted recipient with minimal information.
+FR-17 [Must]: Case C supports a printable receipt and agreed check-in plan.
+FR-18 [Must]: Log communication attempts with time, recipient, channel and actual reported outcome.
+
+Implement Share Link, Copy Link and Open Dialer actions where available, with clear failure handling. Use appropriate maintained platform packages after checking their documentation.
+
+Opening a share sheet is not confirmed delivery. Opening the dialer is not a completed call. Let the shopkeeper record outcomes such as no answer, spoke to customer, message passed through family, or outcome unknown. Never fabricate delivered/read indicators.
+
+Disable inappropriate contact actions for Case C. Display a reminder of the agreed check-in arrangement instead. Customer page refresh, saved repair status and contact attempts must remain separate operations.
+
+9. QUOTATIONS AND DECISIONS: FR-19 TO FR-23
+
+FR-19 [Must]: Save diagnosis and itemized versioned quotations.
+FR-20 [Must]: Quotations requiring a decision use Awaiting Approval and support customer web review, verified calls or in-person review.
+FR-21 [Must]: Record approve/decline against the exact version, with time, channel and verification note.
+FR-22 [Must]: Require approval before repair; additional work or higher cost needs a revised quote and new approval.
+FR-23 [Must]: No remote response means waiting for a customer decision, not assuming consent.
+
+Use parts/labour line items and a server-validated total. Store money in integer minor units, with PKR as the initial currency. Show amounts clearly in rupees. Preserve issued quote versions and decisions instead of overwriting history.
+
+Present explicit Approve and Decline actions only to customer-scoped access. Recheck that the displayed quote is still current before accepting a decision. Reject stale or conflicting submissions and make retries safe.
+
+For telephone/in-person decisions, record the shopkeeper as the recording account, the stated verification method and the customer's decision. Do not falsely describe a manual note as independent identity verification.
+
+The shopkeeper can start/resume repair only when the current quotation is approved. After a decline, follow Ready for Return. No response remains Awaiting Approval. Family-contact access cannot submit a decision even through a direct API request.
+
+10. STATUS LIFECYCLE: FR-24 TO FR-28
+
+FR-24 [Must]: Use exactly these seven business statuses:
+Received; Checking; Awaiting Approval; Repairing; Ready for Pickup; Ready for Return; Delivered.
+
+FR-25 [Must]: Only authorized shop workflow actions change statuses; enforce transitions on the backend.
+FR-26 [Must]: Record previous/new status, timestamp, responsible account and relevant note.
+FR-27 [Must]: Ready for Pickup requires completion and checking of the approved repair.
+FR-28 [Must]: Declined/unrepairable devices go to Ready for Return and become Delivered only after handover.
+
+Implement and test these transitions:
+Received -> Checking.
+Checking -> Awaiting Approval after a quote is issued.
+Checking -> Ready for Return when unrepairable.
+Awaiting Approval -> Repairing after approval of the current quote and the shopkeeper's start action.
+Awaiting Approval -> Ready for Return following a recorded decline.
+Repairing -> Awaiting Approval when revised work/cost requires a new decision.
+Repairing -> Ready for Pickup after repair completion and device checking.
+Repairing -> Ready for Return when the repair cannot be completed.
+Ready for Pickup -> Delivered after verified handover.
+Ready for Return -> Delivered after verified handover.
+
+No customer endpoint may arbitrarily set a status. Do not add Cancelled as a replacement for returning a device. Record the final outcome separately as repaired or returned unrepaired. Keep Delivered terminal in the MVP.
+
+Use transactions or equivalent concurrency controls for transitions and their audit events. A failed save keeps the last confirmed state and shows an error/retry action. Do not silently queue critical approvals or handovers as completed while offline.
+
+11. COLLECTION, RECEIPTS AND WARRANTY: FR-29 TO FR-32
+
+FR-29 [Must]: Before release, match the device, receipt/private collection code and collector details. Missing/mismatched proof requires manual resolution.
+FR-30 [Must]: Generate a final receipt with outcome, itemized charges, recorded payment/balance, collection time and recipient. Record settlement; do not process online payments.
+FR-31 [Must]: Preserve shop warranty dates, covered work and exclusions. Unrepaired returns receive no new repair warranty.
+FR-32 [Should, implement]: Show stored warranty dates and whether the stated period has ended through valid customer access.
+
+Build a collection wizard: verify record and collector; check accessories; review final charges; record actual settlement; record warranty or no new repair warranty; confirm physical handover.
+
+Generate a separate private collection credential and store its verifier securely. Do not expose it in customer/family tracking responses. Prevent guessing and log failed verification appropriately. Lost-receipt recovery must require documented manual verification, not an automatic bypass.
+
+Provide printable PDF handover and final receipts. The handover receipt includes the claim information needed for Case C. The final receipt includes shop details, ticket reference, outcome, approved/agreed charges, amount paid, balance and warranty wording. Avoid unnecessary personal information. Test long line items and page wrapping.
+
+Do not turn quotations into received money or invent diagnostic fees. Any diagnostic/return charge must have a recorded prior agreement. Preserve payment history and prevent duplicate settlement records on retries.
+
+Warranty is supplied by the shop, not guaranteed by RepairProof. A date-based warranty indicator must not claim every possible fault is covered. No new repair warranty is issued for an unrepaired return.
+
+12. DASHBOARD AND SHOP: FR-33 TO FR-36
+
+FR-33 [Must]: Active tickets grouped by status and separate Delivered history.
+FR-34 [Should, implement]: Search own-shop tickets by ticket number, customer name and device model.
+FR-35 [Should, implement]: Dashboard for open repairs, ready devices, completed handovers and actual recorded payments.
+FR-36 [Should, implement]: Editable shop name, contact, address, hours and default warranty wording; existing ticket terms retain their saved version.
+
+Show useful filters, date ranges, empty states and pagination. Search must cover the intended shop records, not secretly search only the first loaded page. Document the MVP search strategy and limits rather than introducing an unnecessary search service.
+
+Calculate summaries from backend records. Define each dashboard metric. Editing a shop's default warranty must never change previously agreed ticket terms.
+
+13. SCREENS AND PROJECT STRUCTURE
+
+Provide connected screens for session checking, login, registration, reset password, dashboard, ticket list, intake wizard, ticket details, quotation editor/history, communication log, collection wizard, receipt preview, Delivered history and shop profile/settings.
+
+The web app needs customer tracking/quote review, family status-only tracking and invalid/expired-access views. Authorized receipt/warranty views may be sections of the customer page rather than separate applications.
+
+Use a clear monorepo:
+repairproof/
+  shopkeeper_app/
+  customer_web/
+  functions/
+  scripts/
+  docs/
+  firebase.json
+  firestore.rules
+  firestore.indexes.json
+  storage.rules
+  .firebaserc.example
+  .gitignore
+  README.md
+
+Inside Flutter, separate core/theme/routing, models, repositories/services, features, controllers/bindings and shared widgets. Separate backend validation, authorization, workflow services and tests. Avoid an oversized main.dart or one giant backend function.
+
+14. DATA AND BACKEND SECURITY
+
+Model the PDF entities: Shop/account, Customer contact, Repair ticket, Device handover, Quote version, Quote decision, Status event, Private access, Contact log and Receipt/warranty. Add only necessary infrastructure records such as idempotency keys and rate-limit counters, documenting their purpose.
+
+Use shop-scoped paths and private image storage. Keep token verifiers, collection verifiers, quote decisions and audit data protected. Use server timestamps and display dates consistently for the shop's timezone.
+
+Provide working backend operations for shop onboarding, intake, safe image handling, issuing/revoking access, scoped tracking, quotation creation, customer decisions, shop-recorded verified decisions, allowed transitions, contact logging, collection verification, settlement and final handover.
+
+Route business-critical mutations through validated backend commands. Deny direct client writes that could bypass approval, change amounts or rewrite audit history. Shop read access and Storage permissions must also be correctly restricted.
+
+Every server command must independently verify its caller and resource ownership. Never trust client-supplied shop IDs, role fields, approved totals, quote versions or status values. Customer endpoints must check the credential on every protected operation.
+
+Use strict request schemas, length limits, safe error responses and server-side abuse controls. Do not rely on client button disabling, hidden fields, CORS or database rules alone to secure privileged server code. Test cross-shop attacks against both database access and function endpoints.
+
+Keep service-account keys, signing secrets and production credentials out of Flutter, browser bundles, Git and the ZIP. Provide configuration examples with placeholders; distinguish public Firebase app identifiers from private server credentials.
+
+Document retention/deletion decisions and deployment privacy work honestly. Clear sensitive browser state appropriately, avoid public image download URLs and do not log private credentials or customer details unnecessarily.
+
+15. TESTS AND ACCEPTANCE CRITERIA
+
+Write executable domain, backend authorization and UI tests where supported. Include a requirements traceability document mapping every FR-01 through FR-36 to its implementation and tests. Preserve Must/Should labels while implementing all 36 for this build.
+
+Required test scenarios:
+- Shop registration, sign-in, password reset and sign-out.
+- Shop A cannot read, modify or download Shop B's data.
+- Case A reaches the correct customer tracking view from another browser/device.
+- Case B requires permission and exposes only limited information, including in API responses.
+- Case C saves without a phone and produces a printable handover receipt.
+- Ticket numbers alone do not grant access; invalid, expired and revoked tokens fail safely.
+- A family token cannot approve a quotation or retrieve financial/photo data.
+- An unapproved or outdated quotation cannot authorize repair.
+- Approve, decline, no response and revised-quotation paths behave correctly.
+- Every allowed transition succeeds under its prerequisites; prohibited transitions fail.
+- Double taps, retries and concurrent requests do not duplicate tickets, decisions, payments or events.
+- A failed save does not show a successful status change.
+- Interrupted uploads and denied camera permission have recoverable UI states.
+- Ready for Pickup requires repair completion/checking.
+- Declined/unrepairable tickets remain in custody until verified return.
+- A tracking token alone cannot release a device; wrong/missing collection proof blocks handover.
+- Repaired and unrepaired receipts/warranties differ correctly.
+- Dashboard payments exclude unaccepted/unpaid quotations.
+- Shop-default changes do not rewrite existing terms.
+- Long text, small screens, empty lists, search and PDF printing are usable.
+
+Seed fictitious local demo tickets for all three contact cases, pending approval, revised quote, ready for pickup, ready for return and Delivered outcomes. Keep seeds out of production and never message demonstration contacts.
+
+Use the PDF's two-minute basic-intake target and five-second online-refresh target as acceptance goals, not claimed results. Record actual test conditions and measurements. Inspect rendered screens and generated receipts when tooling is available. Report unavailable tools or unrun tests explicitly.
+
+16. SETUP, HANDOVER AND FINAL DELIVERABLES
+
+Provide complete source files, manifests, lockfiles, security rules, indexes, emulator configuration, seed scripts and tests. Include no missing imports, fake backend methods or TODO placeholders for core requirements.
+
+Provide README.md, SETUP_ROMAN_URDU.md, REQUIREMENTS_TRACEABILITY.md, ARCHITECTURE.md, ASSUMPTIONS.md, SECURITY.md and TEST_RESULTS.md. Explain the architecture and business rules in beginner-friendly language.
+
+The Windows/VS Code guide must explain installing/checking Flutter, Android tooling, Node and emulator prerequisites; Firebase project configuration; FlutterFire setup; environment variables; starting local services; seeding data; running Android and the customer website; testing; and building Android artifacts.
+
+Provide commands from the correct working directories. Explain emulator networking versus a real phone on a private local network. Do not expose unauthenticated emulators to the public internet. Show how a separately deployed HTTPS website/backend enables customer access away from the laptop.
+
+Provide cloud deployment instructions with billing, permissions and unresolved manual steps clearly identified. Do not invent credentials, hosted URLs, signed artifacts or successful deployments. Document remaining Play Store release/privacy/signing work and check current official requirements before making release claims.
+
+Package the source as RepairProof_Full_Project.zip when file output is available. Include generated APK/build artifacts only when actually built, with their build type identified. Do not include secrets, signing keys, node_modules or unnecessary caches. Where file output is unavailable, provide complete files with exact paths and clearly mark delivery boundaries.
+
+17. WORKING METHOD
+
+Start by checking the source requirements and development environment, then give a short architecture summary and create the project. Do not stop after a plan or UI mockup.
+
+Implement in connected stages: shared backend/authentication; intake and private access; all three contact cases; quotation/status logic; collection/receipts/warranty; dashboard/search/profile; security tests and UI polish; documentation and packaging.
+
+Keep a progress checklist. Complete and test each stage before calling it finished. Continue without repeatedly asking permission for ordinary local coding, but ask before account access, billable deployment, real messages or publishing.
+
+When credentials are missing, complete the emulator implementation and explain only the necessary owner configuration steps. Never silently downgrade to fake data. Clearly distinguish implemented, tested, locally demonstrated and deployed functionality.
+
+At the end, provide the project location or download, exact run commands, test results, unresolved issues and remaining manual setup. Do not claim production readiness, guaranteed earnings or universal security.
+
+Build RepairProof as a complete, attractive, understandable semester MVP with a real shared backend and every required customer-contact case working correctly.

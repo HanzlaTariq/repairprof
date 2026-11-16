@@ -1,0 +1,22 @@
+# Assumptions and explicit limits
+
+- The PDF named in the prompt was unavailable. Only the attached master text supplied FR-01–FR-36. No claim is made about reading PDF flowcharts.
+- One owner UID owns one shop. Registration creates the Auth account, then a separate authenticated transaction saves the shop. An interrupted onboarding resumes at Shop setup.
+- English interface, PKR, Asia/Karachi dates. Event timestamps are server-generated ISO UTC values; display and warranty date indicators use Pakistan time.
+- A new display-number series starts at RP-1001 per shop. Private tokens and collection codes are unrelated to it.
+- A customer bearer link can approve a quote. The app states that possession of the link is not independently verified identity or physical collection authority.
+- Family links include ticket reference, current status, expected pickup/check-in and shop contact only. Customer identity, device details, quotations, financial information, timeline notes and receipts are excluded.
+- Quote decisions do not automatically begin repair. The owner performs a separate start/resume action. Decline immediately prepares return.
+- No photo is mandatory because intake can describe condition in text; when photos are selected, all must be saved before intake succeeds. Maximum 4 JPEG/PNG inputs, each 3 MiB and 16 million decoded pixels; output is resized to 1600×1600 maximum and JPEG-compressed without original metadata.
+- Text bounds: customer 100, brand 60, model 80, problem/diagnosis 1200, condition 800, accessories 400, quote description 180, verification notes 400–500 characters.
+- At most 30 line items per quote; quantities 1–100; at most 30 quote versions; total ceiling 100,000,000 minor units = PKR 1,000,000. At most 100 communication attempts and 400 audit events per repair. These document-size limits require a subcollection migration for larger histories.
+- Search scans all own-shop records up to an enforced 10,000-record cap. Public launch needs realistic volume/cost testing.
+- Initial access lifetime is 30 days; issuance permits 1–365 days. Reissue revokes earlier links of the same scope; contact-route changes revoke both scopes.
+- Collection codes contain 72 random bits rendered as three groups of six hexadecimal characters. Five mismatches lock checking for 15 minutes. Manual lost-receipt resolution requires a documented verification note of at least 30 characters; it remains a human responsibility.
+- Collection does not require full settlement. Any unpaid balance is explicit; the owner can later record actual balance payments without reopening the repair. No overpayment/refund or online gateway is supported.
+- Diagnostic/return charges are optional and must be agreed at intake. No diagnostic fee is added automatically.
+- No persistent offline intake drafts or offline critical mutation queue. In-memory identical retries are supported. A process restart can lose a local draft; check saved tickets before restarting an ambiguous intake.
+- Picked-photo recovery is offered when the intake screen opens after an interrupted camera session; the user must confirm the recovered image belongs to that intake.
+- App ID `com.repairproof.app` is a proposed identifier, not a claim of Play Store availability or trademark ownership.
+- Account deletion is implemented as immediate access blocking plus deletion after seven days/next daily run. This is an operational default, not a legal retention requirement. Final retention/support statements must match the publisher's actual deployment and backups.
+- No automated messaging, push notifications, payments, subscriptions, staff/branches, location tracking, AI diagnosis or customer installation is included.
