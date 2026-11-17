@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/config.dart';
+import '../../core/safe_dispose.dart';
 import '../../services/api.dart';
 import '../../widgets/common.dart';
 import '../auth/session.dart';
@@ -116,7 +117,7 @@ class _ShopPageState extends State<ShopPage> {
       ),
     );
     if (ok != true) {
-      password.dispose();
+      disposeLater([password]);
       return;
     }
     setState(() => busy = true);
@@ -135,7 +136,7 @@ class _ShopPageState extends State<ShopPage> {
     } catch (e) {
       showError(e);
     } finally {
-      password.dispose();
+      disposeLater([password]);
       if (mounted) setState(() => busy = false);
     }
   }

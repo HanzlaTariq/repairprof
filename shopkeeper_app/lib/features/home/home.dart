@@ -67,11 +67,9 @@ class HomeController extends GetxController {
     loadOverview();
   }
 
-  @override
-  void onClose() {
-    search.dispose();
-    super.onClose();
-  }
+  // The search controller is intentionally not disposed here: GetX can close this
+  // controller while the page is still on screen (route replacement), which
+  // caused "TextEditingController was used after being disposed".
 }
 
 class HomePage extends GetView<HomeController> {

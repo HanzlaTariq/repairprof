@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/config.dart';
+import '../../core/safe_dispose.dart';
 import '../../core/theme.dart';
 import '../../models/repair.dart';
 import '../../services/api.dart';
@@ -53,7 +54,7 @@ class TicketPage extends GetView<TicketController> {
         ],
       ),
     );
-    c.dispose();
+    disposeLater([c]);
     return result;
   }
 
@@ -153,7 +154,7 @@ class TicketPage extends GetView<TicketController> {
         ),
       ),
     );
-    verification.dispose();
+    disposeLater([verification]);
     if (data != null) await controller.command('decision', data);
   }
 
@@ -211,7 +212,7 @@ class TicketPage extends GetView<TicketController> {
       ),
     );
     final days = int.tryParse(expiry.text) ?? 0;
-    expiry.dispose();
+    disposeLater([expiry]);
     if (approved != true) return;
     final result = await controller.command('issueAccess', {
       'scope': scope,
@@ -374,7 +375,7 @@ class TicketPage extends GetView<TicketController> {
         ),
       ),
     );
-    text.dispose();
+    disposeLater([text]);
     if (data != null) await controller.command('communication', data);
   }
 
@@ -466,9 +467,7 @@ class TicketPage extends GetView<TicketController> {
         ),
       ),
     );
-    for (final c in [number, recipient, purpose, verification]) {
-      c.dispose();
-    }
+    disposeLater([number, recipient, purpose, verification]);
     if (data != null) await controller.command('contact', data);
   }
 
@@ -589,7 +588,7 @@ class TicketPage extends GetView<TicketController> {
         ),
       ),
     );
-    amount.dispose();
+    disposeLater([amount]);
     if (data != null) await controller.command('payment', data);
   }
 

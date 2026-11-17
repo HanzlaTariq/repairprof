@@ -1,0 +1,33 @@
+PHASE 1 CHANGES - RepairProof shopkeeper app (Flutter)
+=====================================================
+Problem: "A TextEditingController was used after being disposed" followed by
+many cascading errors (Duplicate GlobalKeys, wrong build scope, red screen)
+after closing a dialog (contact attempt, payment, decision, access, contact)
+and when tapping bottom navigation on Home.
+
+Cause:
+ 1. Dialog controllers were disposed right after `await Get.dialog(...)`
+    while the dialog's close animation was still rebuilding its TextField.
+ 2. HomeController.onClose() disposed `search`, but GetX can close the
+    controller while the page is still visible.
+
+NEW FILE
+ shopkeeper_app/lib/core/safe_dispose.dart   -> disposeLater() helper
+    (disposes after 700 ms, once the dialog animation is finished)
+
+UPDATED FILES
+ shopkeeper_app/lib/features/ticket/ticket_page.dart
+    -> 6 dialog controllers now use disposeLater() + import
+ shopkeeper_app/lib/features/shop/shop_page.dart
+    -> delete-account password controller uses disposeLater() + import
+ shopkeeper_app/lib/features/home/home.dart
+    -> HomeController no longer disposes `search` in onClose()
+
+HOW TO APPLY
+ Extract this ZIP into the project root (F:\appplay\repairproof), allow
+ overwrite. Then in the Flutter terminal press  R  (hot restart), or stop
+ and run flutter run again.
+
+NOT TESTED: no Flutter SDK was available where the patch was written.
+Please re-test: open a ticket -> Add contact attempt / Record payment /
+Record decision, then switch Dashboard/Tickets/History tabs.
